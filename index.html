@@ -15,6 +15,7 @@
 </head>
 <body>
   <h1>Bluetooth Instant Messaging</h1>
+  <div id="status"></div>
   <div id="messages"></div>
   <input type="text" id="input" placeholder="Type a message">
   <button id="sendBtn">Send</button>
@@ -38,6 +39,13 @@
     // Request Bluetooth device and connect to it
     document.getElementById('connectBtn').addEventListener('click', async () => {
       try {
+        if (!navigator.bluetooth) {
+          throw new Error('Web Bluetooth API is not supported in this browser');
+        }
+
+        // Show connecting status
+        addMessage('Requesting Bluetooth device...');
+        
         // Request any Bluetooth device (adjust filters as needed for your service)
         bluetoothDevice = await navigator.bluetooth.requestDevice({
           acceptAllDevices: true,
